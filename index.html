@@ -146,6 +146,8 @@
             <button class="operator-button" onclick="calculateCube()">x³</button>
             <button class="operator-button" onclick="calculateCubeRoot()">³√x</button>
             <button class="operator-button" onclick="calculatePower()">xⁿ</button>
+            <button class="operator-button" onclick="clearResult()">C</button>
+            <button class="operator-button" onclick="calculateLog()">Log</button>
         </div>
         <div class="history" id="history">
             <h3>Calculation History</h3>
@@ -244,6 +246,19 @@
             previousInput = '';
             operator = '';
             resultElement.value = '';
+        }
+
+        function calculateLog() {
+            if (currentInput === '') return;
+            const value = parseFloat(currentInput);
+            if (value <= 0) {
+                resultElement.value = 'Error';
+                return;
+            }
+            const result = Math.log(value);
+            resultElement.value = result;
+            addToHistory(`log(${currentInput}) = ${result}`);
+            currentInput = result.toString();
         }
 
         function addToHistory(entry) {
