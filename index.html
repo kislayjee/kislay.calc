@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .name-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 10px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #333;
+            margin: 0;
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .calculator {
+            margin: 20px auto;
+            padding: 20px;
+            width: 350px;
+            background-color: grey;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+        }
+
+        .calculator input {
+            grid-column: span 4;
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .calculator button {
+            padding: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: white;
+            color: #ffd700;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .calculator button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .history {
+            margin-top: 20px;
+            width: 300px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history h3 {
+            margin: 0;
+            margin-bottom: 10px;
+        }
+
+        .history p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .number-button {
+            grid-column: span 1;
+        }
+
+        .operator-button {
+            grid-column: span 1;
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="Screenshot 2025-01-25 065856.jpg" alt="Calculator">
+        <div class="name-box">
+            <h1>CALCULATOR</h1>
+        </div>
+        <div class="calculator">
+            <input type="text" id="result" disabled>
+            <button class="number-button" onclick="appendNumber('7')">7</button>
+            <button class="number-button" onclick="appendNumber('8')">8</button>
+            <button class="number-button" onclick="appendNumber('9')">9</button>
+            <button class="operator-button" onclick="setOperator('+')">+</button>
+            <button class="number-button" onclick="appendNumber('4')">4</button>
+            <button class="number-button" onclick="appendNumber('5')">5</button>
+            <button class="number-button" onclick="appendNumber('6')">6</button>
+            <button class="operator-button" onclick="setOperator('-')">-</button>
+            <button class="number-button" onclick="appendNumber('1')">1</button>
+            <button class="number-button" onclick="appendNumber('2')">2</button>
+            <button class="number-button" onclick="appendNumber('3')">3</button>
+            <button class="operator-button" onclick="setOperator('*')">*</button>
+            <button class="number-button" onclick="appendNumber('0')">0</button>
+            <button class="number-button" onclick="appendNumber('.')">.</button>
+            <button class="operator-button" onclick="calculate()">=</button>
+            <button class="operator-button" onclick="setOperator('/')">/</button>
+            <button class="operator-button" onclick="calculateSquare()">x²</button>
+            <button class="operator-button" onclick="calculateSquareRoot()">√x</button>
+            <button class="operator-button" onclick="calculateCube()">x³</button>
+            <button class="operator-button" onclick="calculateCubeRoot()">³√x</button>
+            <button class="operator-button" onclick="calculatePower()">xⁿ</button>
+        </div>
+        <div class="history" id="history">
+            <h3>Calculation History</h3>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = '';
+        let operator = '';
+        let previousInput = '';
+        const historyElement = document.getElementById('history');
+        const resultElement = document.getElementById('result');
+
+        function appendNumber(number) {
+            currentInput += number;
+            resultElement.value = currentInput;
+        }
+
+        function setOperator(op) {
+            if (currentInput === '') return;
+            operator = op;
+            previousInput = currentInput;
+            currentInput = '';
+        }
+
+        function calculate() {
+            if (currentInput === '' || previousInput === '') return;
+            let result;
+            switch (operator) {
+                case '+':
+                    result = parseFloat(previousInput) + parseFloat(currentInput);
+                    break;
+                case '-':
+                    result = parseFloat(previousInput) - parseFloat(currentInput);
+                    break;
+                case '*':
+                    result = parseFloat(previousInput) * parseFloat(currentInput);
+                    break;
+                case '/':
+                    result = parseFloat(previousInput) / parseFloat(currentInput);
+                    break;
+                default:
+                    return;
+            }
+            resultElement.value = result;
+            addToHistory(`${previousInput} ${operator} ${currentInput} = ${result}`);
+            currentInput = '';
+            previousInput = '';
+            operator = '';
+        }
+
+        function calculateSquare() {
+            if (currentInput === '') return;
+            const result = Math.pow(parseFloat(currentInput), 2);
+            resultElement.value = result;
+            addToHistory(`${currentInput}² = ${result}`);
+            currentInput = result.toString();
+        }
+
+        function calculateSquareRoot() {
+            if (currentInput === '') return;
+            const result = Math.sqrt(parseFloat(currentInput));
+            resultElement.value = result;
+            addToHistory(`√${currentInput} = ${result}`);
+            currentInput = result.toString();
+        }
+
+        function calculateCube() {
+            if (currentInput === '') return;
+            const result = Math.pow(parseFloat(currentInput), 3);
+            resultElement.value = result;
+            addToHistory(`${currentInput}³ = ${result}`);
+            currentInput = result.toString();
+        }
+
+        function calculateCubeRoot() {
+            if (currentInput === '') return;
+            const result = Math.cbrt(parseFloat(currentInput));
+            resultElement.value = result;
+            addToHistory(`³√${currentInput} = ${result}`);
+            currentInput = result.toString();
+        }
+
+        function calculatePower() {
+            const base = parseFloat(currentInput);
+            const exponent = prompt('Enter the exponent:');
+            if (exponent === null || exponent === '') return;
+            const result = Math.pow(base, parseFloat(exponent));
+            resultElement.value = result;
+            addToHistory(`${base}^${exponent} = ${result}`);
+            currentInput = result.toString();
+        }
+
+        function clearResult() {
+            currentInput = '';
+            previousInput = '';
+            operator = '';
+            resultElement.value = '';
+        }
+
+        function addToHistory(entry) {
+            const p = document.createElement('p');
+            p.textContent = entry;
+            historyElement.appendChild(p);
+            historyElement.scrollTop = historyElement.scrollHeight;
+        }
+
+        document.addEventListener('keydown', (event) => {
+            const key = event.key;
+            if (!isNaN(key) || key === '.') {
+                appendNumber(key);
+            } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+                setOperator(key);
+            } else if (key === 'Enter') {
+                calculate();
+            } else if (key === 'c' || key === 'C') {
+                clearResult();
+            }
+        });
+    </script>
+</body>
+</html>
