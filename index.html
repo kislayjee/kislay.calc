@@ -255,9 +255,9 @@
                 resultElement.value = 'Error';
                 return;
             }
-            const result = Math.log(value);
+            const result = Math.log10(value); // Base-10 logarithm
             resultElement.value = result;
-            addToHistory(`log(${currentInput}) = ${result}`);
+            addToHistory(`log10(${currentInput}) = ${result}`);
             currentInput = result.toString();
         }
 
